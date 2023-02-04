@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 00:30:20 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/01 02:19:07 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/04 15:39:04 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,17 @@ int	fill_philo_args(int argc, char **argv, t_philo_args *args)
 	i = -1;
 	while (++i < 5)
 		words[i] = NULL;
+	
+	memset(args, 0, sizeof(t_philo_args));
+	if (argc == 6)
+		args->is_limited = true;
 	if (!set_words(argc, argv, words))
 		return (0);
 	args->count = ft_atol(words[0]);
 	args->die_time = ft_atol(words[1]);
 	args->eat_time = ft_atol(words[2]);
 	args->sleep_time = ft_atol(words[3]);
-	if (words[4])
+	if (args->is_limited)
 		args->eat_limit = ft_atol(words[4]);
 	if (!is_valid_num(words[0], args->count)
 		||	!is_valid_num(words[1], args->die_time)

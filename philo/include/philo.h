@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:56:30 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/01 02:08:55 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/04 15:38:42 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,17 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include <string.h>
 
 /*
-	size_t ->	count;
-	size_t ->	die_time;
-	size_t ->	eat_time;
-	size_t ->	sleep_time;
-	long ->		eat_limit;
+	size_t:
+	count;
+	die_time;
+	eat_time;
+	sleep_time;
+	eat_limit;
+	is_limited -> bool
+
 	Eat limit is set to -1 when it's not given.
 */
 typedef struct s_philo_args
@@ -35,6 +39,7 @@ typedef struct s_philo_args
 	size_t	eat_time;
 	size_t	sleep_time;
 	size_t	eat_limit;
+	bool	is_limited;
 }	t_philo_args;
 
 long	ft_atol(const char *str);
