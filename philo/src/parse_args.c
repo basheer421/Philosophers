@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 00:30:20 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/04 19:34:50 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/04 20:46:01 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ static bool	set_words(int argc, char **argv, char **words)
 static bool	is_valid_num(char *s, long n)
 {
 	if (!s)
-		return (1);
+		return (true);
 	if (n == 0 && (*s >= '0' && *s <= '9')
 		&& ft_strlen(s) == 1 && *s == '0')
-		return (1);
+		return (true);
 	else if (n <= 0)
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
 
 bool	fill_philo_args(int argc, char **argv, t_philo_args *args)
@@ -91,7 +91,7 @@ bool	fill_philo_args(int argc, char **argv, t_philo_args *args)
 	if (argc == 6)
 		args->is_limited = true;
 	if (!set_words(argc, argv, words))
-		return (0);
+		return (false);
 	args->count = ft_atol(words[0]);
 	args->die_time = ft_atol(words[1]);
 	args->eat_time = ft_atol(words[2]);
@@ -103,6 +103,6 @@ bool	fill_philo_args(int argc, char **argv, t_philo_args *args)
 		||  !is_valid_num(words[2], args->eat_time)
 		||  !is_valid_num(words[3], args->sleep_time)
 		||  !is_valid_num(words[4], args->eat_limit))
-		return (0);
-	return (1);
+		return (destroy_words(words), false);
+	return (destroy_words(words), true);
 }
