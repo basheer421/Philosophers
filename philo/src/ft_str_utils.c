@@ -6,21 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 00:38:25 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/01 02:14:41 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/04 18:40:02 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-char	*ft_skip_spaces(char *str)
-{
-	int	i;
-
-	i = 0;
-	while ((str[i]) == ' ')
-		i++;
-	return (str + i);
-}
 
 int ft_strlen(const char *s)
 {

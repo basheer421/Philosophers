@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:56:30 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/04 15:38:42 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/04 18:39:30 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ long	ft_atol(const char *str);
 char	*ft_skip_spaces(char *str);
 int 	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_index(const char *str, int c);
-int		fill_philo_args(int argc, char **argv, t_philo_args *args);
+char	*ft_strtrim(char const *s1, char const *set);
+bool	fill_philo_args(int argc, char **argv, t_philo_args *args);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 21:59:12 by bammar            #+#    #+#              #
-#    Updated: 2023/02/01 01:52:21 by bammar           ###   ########.fr        #
+#    Updated: 2023/02/04 19:23:53 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ FILES	=	src/philo.c \
 			src/ft_atol.c \
 			src/ft_str_utils.c \
 			src/parse_args.c \
+			src/ft_strtrim.c \
 
 CC		=	cc
 
