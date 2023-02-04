@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 00:30:20 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/04 20:46:01 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/04 21:48:13 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,6 @@ static bool	contains_nonnum(const char *str)
 			temp++;
 	return (false);
 }
-
-// static bool	invalid_end(char *str)
-// {
-// 	str += ft_index(str, ' ');
-// 	printf("str:%s\n", str);
-// 	printf("str:%d\n", ft_strlen(str));
-// 	str = ft_skip_spaces(str);
-// 	printf("str:%d\n", ft_strlen(str));
-// 	if (*str == '\0')
-// 		return (false);
-// 	printf("hi\n");
-
-// 	return (true);
-// }
 
 static void	destroy_words(char **words)
 {

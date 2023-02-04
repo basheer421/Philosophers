@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:56:30 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/04 18:39:30 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/04 22:58:33 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <pthread.h>
 # include <stdbool.h>
 # include <string.h>
+
+typedef enum philo_state
+{
+	EATING,
+	THINKING,
+	SLEEPING
+}	t_philo_state;
 
 /*
 	size_t:
@@ -42,8 +49,14 @@ typedef struct s_philo_args
 	bool	is_limited;
 }	t_philo_args;
 
+typedef struct s_philo
+{
+	size_t			num;
+	t_philo_state	state;
+	size_t			eat_count;
+}	t_philo;
+
 long	ft_atol(const char *str);
-char	*ft_skip_spaces(char *str);
 int 	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
 int		ft_index(const char *str, int c);
