@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 23:06:46 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/05 03:21:11 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/05 04:14:56 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,29 @@ static int	right_fork(int i, int n)
 	return (i + 1);
 }
 
+static bool	forks_init(pthread_mutex_t **forks, int count)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < count)
+	{
+		if (pthread_mutex_init(forks[i], NULL) != 0)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 bool	philo_init(t_philo_args *args, t_philo ***philos,
 			pthread_mutex_t **forks)
 {
 	size_t	i;
 
-	*forks = malloc(sizeof(pthread_mutex_t) * (args->count));
-	if (!*forks)
-		return (false);
 	*philos = malloc(sizeof(t_philo *) * (args->count + 1));
 	if (!(*philos))
 		return (false);
+	forks_init(forks, args->count);
 	i = 0;
 	while (i < args->count)
 	{
@@ -65,7 +77,7 @@ void	philo_destroy(t_philo **philos, pthread_mutex_t *forks)
 	{
 		free(philos[i]->thread);
 		free(philos[i]);
+		pthread_mutex_destroy(&forks[i]);
 	}
 	free(philos);
-	free(forks);
 }
