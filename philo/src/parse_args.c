@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 00:30:20 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/04 21:48:13 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/05 03:08:31 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static bool	contains_nonnum(const char *str)
 {
-	int		i;
 	char	*temp;
 
-	i = -1;
 	temp = (char *)(str);
 	while (*(temp))
 		if ((*temp < '0' || *temp > '9')
@@ -67,11 +65,11 @@ static bool	is_valid_num(char *s, long n)
 
 bool	fill_philo_args(int argc, char **argv, t_philo_args *args)
 {
-	char	*words[5];
+	char	*words[6];
 	int		i;
 
 	i = -1;
-	while (++i < 5)
+	while (++i < 6)
 		words[i] = NULL;
 	memset(args, 0, sizeof(t_philo_args));
 	if (argc == 6)

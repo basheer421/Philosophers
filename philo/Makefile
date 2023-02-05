@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 21:59:12 by bammar            #+#    #+#              #
-#    Updated: 2023/02/04 19:23:53 by bammar           ###   ########.fr        #
+#    Updated: 2023/02/05 03:36:07 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,13 @@ FILES	=	src/philo.c \
 			src/ft_str_utils.c \
 			src/parse_args.c \
 			src/ft_strtrim.c \
+			src/philo_init.c \
+			src/philo_lifecycle.c \
+			src/philo_sim.c \
 
 CC		=	cc
 
-CFLAGS	=	-Wall -Werror -Wextra  -I ./include -g -fsanitize=address
+CFLAGS	=	-Wall -Werror -Wextra  -I ./include -g
 
 LINKS	=	-pthread
 
