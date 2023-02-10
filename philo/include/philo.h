@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:56:30 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/05 03:55:10 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/05 17:46:56 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,20 @@ typedef struct s_philo_args
 	bool	is_limited;
 }	t_philo_args;
 
+typedef struct s_fork
+{
+	bool			is_used;
+	pthread_mutex_t	*mutex;
+}	t_fork;
+
 typedef struct s_philo
 {
 	size_t			num;
 	t_philo_state	state;
 	size_t			eat_count;
-	pthread_mutex_t	*forks[2];
+	t_fork			forks[2];
 	pthread_t		*thread;
+	time_t			last_mealtime;
 }	t_philo;
 
 typedef struct s_thread_arg
@@ -78,5 +85,7 @@ bool	philo_init(t_philo_args *args, t_philo ***philos,
 void	philo_destroy(t_philo **philos, pthread_mutex_t *forks);
 bool	philo_sim(t_philo *philos, t_philo_args *args);
 void	*philo_lifecycle(void *arg);
+time_t	get_mtime(void);
+void	philo_msg(size_t philo_num, const char *msg);
 
 #endif

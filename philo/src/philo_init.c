@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 23:06:46 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/05 04:14:56 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/06 00:08:18 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,35 @@
 
 static int	left_fork(int i, int n)
 {
-	if (i - 1 < 0)
-		return (n - 1);
-	return (i - 1);
+	(void) n;
+	return (i);
 }
 
 static int	right_fork(int i, int n)
 {
-	if (i + 1 == n)
+	if (i == n - 1)
 		return (0);
 	return (i + 1);
 }
 
-static bool	forks_init(pthread_mutex_t **forks, int count)
+static bool	forks_init(pthread_mutex_t ***forks, size_t count)
 {
 	size_t	i;
 
+	*forks = malloc(sizeof(pthread_mutex_t *) * (count + 1));
+	if (!*forks)
+		return (false);
 	i = 0;
 	while (i < count)
 	{
-		if (pthread_mutex_init(forks[i], NULL) != 0)
+		(*forks)[i] = malloc(sizeof(pthread_mutex_t));
+		if (!(*forks)[i])
+			return (false);
+		if (pthread_mutex_init((*forks)[i], NULL) != 0)
 			return (false);
 		i++;
 	}
+	(*forks)[i] = NULL;
 	return (true);
 }
 
@@ -48,20 +54,29 @@ bool	philo_init(t_philo_args *args, t_philo ***philos,
 	*philos = malloc(sizeof(t_philo *) * (args->count + 1));
 	if (!(*philos))
 		return (false);
-	forks_init(forks, args->count);
+	forks_init(&forks, args->count);
 	i = 0;
 	while (i < args->count)
 	{
 		(*philos)[i] = malloc(sizeof(t_philo));
 		if (!(*philos)[i])
 			return (false);
+		(*philos)[i]->eat_count = 0;
+		(*philos)[i]->last_mealtime = get_mtime();
+		(*philos)[i]->state = THINKING;
+		(*philos)[i]->forks[0].is_used = false;
+		(*philos)[i]->forks[1].is_used = false;
 		(*philos)[i]->thread = malloc(sizeof(pthread_t));
 		if (!(*philos)[i]->thread)
 			return (false);
 		(*philos)[i]->num = i + 1;
-		(*philos)[i]->state = THINKING;
-		(*philos)[i]->forks[RIGHT] = &(forks[0][right_fork(i, args->count)]);
-		(*philos)[i]->forks[LEFT] = &(forks[0][left_fork(i, args->count)]);
+		// int rindex = right_fork(i, args->count);
+		// int lindex = left_fork(i, args->count);
+		(*philos)[i]->forks[RIGHT].mutex = &((*forks)[right_fork(i, args->count)]);
+		(*philos)[i]->forks[LEFT].mutex = &((*forks)[left_fork(i, args->count)]);
+		// printf("rfork(%d):%p\nlfork(%d):%p\n", rindex, (*philos)[i]->forks[RIGHT].mutex
+		// , lindex
+		// , (*philos)[i]->forks[LEFT].mutex );
 		i++;
 	}
 	(*philos)[i] = NULL;

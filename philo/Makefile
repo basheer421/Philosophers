@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 21:59:12 by bammar            #+#    #+#              #
-#    Updated: 2023/02/05 03:36:07 by bammar           ###   ########.fr        #
+#    Updated: 2023/02/05 23:20:40 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ FILES	=	src/philo.c \
 			src/philo_init.c \
 			src/philo_lifecycle.c \
 			src/philo_sim.c \
+			src/philo_msg.c \
 
 CC		=	cc
 
