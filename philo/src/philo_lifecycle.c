@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:57:27 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/06 00:12:04 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/17 01:00:32 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void	*philo_lifecycle(void *arg)
 	thrd_arg = (t_thread_arg *)arg;
 	rfork = thrd_arg->philo->forks[RIGHT];
 	lfork = thrd_arg->philo->forks[LEFT];
-	printf("philinum: %d\n", thrd_arg->philo->num);
-	printf("rfork:%p\nlfork:%p\n", rfork.mutex, lfork.mutex);
 	thrd_arg->philo->last_mealtime = get_mtime();
 	while (true)
 	{

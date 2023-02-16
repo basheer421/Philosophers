@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 23:06:46 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/06 00:08:18 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/17 01:25:38 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ static bool	forks_init(pthread_mutex_t ***forks, size_t count)
 }
 
 bool	philo_init(t_philo_args *args, t_philo ***philos,
-			pthread_mutex_t **forks)
+			pthread_mutex_t ***forks)
 {
 	size_t	i;
 
 	*philos = malloc(sizeof(t_philo *) * (args->count + 1));
 	if (!(*philos))
 		return (false);
-	forks_init(&forks, args->count);
+	forks_init(forks, args->count);
 	i = 0;
 	while (i < args->count)
 	{
@@ -70,20 +70,15 @@ bool	philo_init(t_philo_args *args, t_philo ***philos,
 		if (!(*philos)[i]->thread)
 			return (false);
 		(*philos)[i]->num = i + 1;
-		// int rindex = right_fork(i, args->count);
-		// int lindex = left_fork(i, args->count);
-		(*philos)[i]->forks[RIGHT].mutex = &((*forks)[right_fork(i, args->count)]);
-		(*philos)[i]->forks[LEFT].mutex = &((*forks)[left_fork(i, args->count)]);
-		// printf("rfork(%d):%p\nlfork(%d):%p\n", rindex, (*philos)[i]->forks[RIGHT].mutex
-		// , lindex
-		// , (*philos)[i]->forks[LEFT].mutex );
+		(*philos)[i]->forks[RIGHT].mutex = &((**forks)[right_fork(i, args->count)]);
+		(*philos)[i]->forks[LEFT].mutex = &((**forks)[left_fork(i, args->count)]);
 		i++;
 	}
 	(*philos)[i] = NULL;
 	return (true);
 }
 
-void	philo_destroy(t_philo **philos, pthread_mutex_t *forks)
+void	philo_destroy(t_philo **philos, pthread_mutex_t **forks)
 {
 	int	i;
 
@@ -92,7 +87,9 @@ void	philo_destroy(t_philo **philos, pthread_mutex_t *forks)
 	{
 		free(philos[i]->thread);
 		free(philos[i]);
-		pthread_mutex_destroy(&forks[i]);
+		pthread_mutex_destroy(forks[i]);
+		free(forks[i]);
 	}
+	free(forks);
 	free(philos);
 }

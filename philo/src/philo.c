@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 22:09:14 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/05 03:51:02 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/17 01:26:56 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	print_error(const char *msg)
 int	main(int argc, char **argv)
 {
 	t_philo_args	args;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	**forks;
 	t_philo			**philos;
 
 	if (argc != 5 && argc != 6)
@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 		return (print_error("Error\nIncorrect arguments\n"), EXIT_FAILURE);
 	if (!philo_init(&args, &philos, &forks))
 		return (EXIT_FAILURE);
-	if (!philo_sim(*philos, &args))
-		return (philo_destroy(philos, forks), EXIT_FAILURE); 
+	// if (!philo_sim(*philos, &args))
+	// 	return (philo_destroy(philos, *forks), EXIT_FAILURE); 
 	return (philo_destroy(philos, forks), EXIT_SUCCESS);
 }
