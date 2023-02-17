@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:56:30 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/17 01:24:47 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/17 14:04:24 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ bool	fill_philo_args(int argc, char **argv, t_philo_args *args);
 bool	philo_init(t_philo_args *args, t_philo ***philos,
 			pthread_mutex_t ***forks);
 void	philo_destroy(t_philo **philos, pthread_mutex_t **forks);
-bool	philo_sim(t_philo *philos, t_philo_args *args);
+bool	philo_sim(t_philo **philos, t_philo_args *args);
 void	*philo_lifecycle(void *arg);
 time_t	get_mtime(void);
 void	philo_msg(size_t philo_num, const char *msg);
