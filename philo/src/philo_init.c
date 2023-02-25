@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 23:06:46 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/17 01:25:38 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/22 20:39:14 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ bool	philo_init(t_philo_args *args, t_philo ***philos,
 		(*philos)[i]->state = THINKING;
 		(*philos)[i]->forks[0].is_used = false;
 		(*philos)[i]->forks[1].is_used = false;
+		(*philos)[i]->forks[0].last_user = 0;
+		(*philos)[i]->forks[1].last_user = 0;
 		(*philos)[i]->thread = malloc(sizeof(pthread_t));
 		if (!(*philos)[i]->thread)
 			return (false);

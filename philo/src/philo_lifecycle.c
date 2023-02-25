@@ -6,11 +6,17 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:57:27 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/17 01:00:32 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/25 11:49:37 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static bool	philo_sleep(t_thread_arg *thrd_arg)
+{
+	philo_msg(thrd_arg, "is sleeping\n");
+	return (usleep((thrd_arg->args->sleep_time) * 1000));
+}
 
 static bool	eat(t_thread_arg *thrd_arg)
 {
@@ -19,30 +25,37 @@ static bool	eat(t_thread_arg *thrd_arg)
 
 	rfork = thrd_arg->philo->forks[RIGHT];
 	lfork = thrd_arg->philo->forks[LEFT];
+	
+	pthread_mutex_lock(rfork.mutex);
+	pthread_mutex_lock(lfork.mutex);
 	rfork.is_used = true;
 	lfork.is_used = true;
-	if (pthread_mutex_lock(rfork.mutex) != 0
-		|| pthread_mutex_lock(lfork.mutex) != 0)
-		return (false);
-	philo_msg(thrd_arg->philo->num, "has taken a fork\n");
-	philo_msg(thrd_arg->philo->num, "has taken a fork\n");
-	philo_msg(thrd_arg->philo->num, "is eating\n");
+	rfork.last_user = thrd_arg->philo->num;
+	lfork.last_user = thrd_arg->philo->num;
+	thrd_arg->philo->state = EATING;
+	philo_msg(thrd_arg, "has taken a fork\n");
+	philo_msg(thrd_arg, "has taken a fork\n");
+	philo_msg(thrd_arg, "is eating\n");
+	thrd_arg->philo->last_mealtime = get_mtime();
+	pthread_mutex_unlock(rfork.mutex);
+	pthread_mutex_unlock(lfork.mutex);
 	usleep((thrd_arg->args->eat_time) * 1000);
-	if (pthread_mutex_unlock(rfork.mutex) != 0
-		|| pthread_mutex_unlock(lfork.mutex) != 0)
-		return (false);
+	pthread_mutex_lock(rfork.mutex);
+	pthread_mutex_lock(lfork.mutex);
+	rfork.is_used = false;
+	lfork.is_used = false;
+	pthread_mutex_unlock(rfork.mutex);
+	pthread_mutex_unlock(lfork.mutex);
 	return (true);
-}
-
-static bool	philo_sleep(t_thread_arg *thrd_arg)
-{
-	philo_msg(thrd_arg->philo->num, "is sleeping\n");
-	return (usleep((thrd_arg->args->sleep_time) * 1000));
 }
 
 static void	*die(t_thread_arg *thrd_arg)
 {
-	philo_msg(thrd_arg->philo->num, "died\n");
+	pthread_mutex_lock(thrd_arg->exit_mutex);
+	if (*thrd_arg->is_exit == false)
+		philo_msg(thrd_arg, "died\n");
+	*(thrd_arg->is_exit) = true;
+	pthread_mutex_unlock(thrd_arg->exit_mutex);
 	return (NULL);
 }
 
@@ -56,17 +69,21 @@ void	*philo_lifecycle(void *arg)
 	rfork = thrd_arg->philo->forks[RIGHT];
 	lfork = thrd_arg->philo->forks[LEFT];
 	thrd_arg->philo->last_mealtime = get_mtime();
-	while (true)
+	while (!(*thrd_arg->is_exit))
 	{
 		if (get_mtime() - thrd_arg->philo->last_mealtime
 			>= (time_t)thrd_arg->args->die_time)
 			return (die(thrd_arg));
-		if (rfork.is_used || lfork.is_used)
+		else if (rfork.is_used || lfork.is_used
+			|| rfork.last_user == thrd_arg->philo->num
+			|| lfork.last_user == thrd_arg->philo->num)
 			thrd_arg->philo->state = THINKING;
 		else
 		{
-			if (!eat(thrd_arg))
-				return (NULL);
+			thrd_arg->philo->state = EATING;
+			eat(thrd_arg);
+			philo_msg(thrd_arg, "is sleeping\n");
+			thrd_arg->philo->state = SLEEPING;
 			philo_sleep(thrd_arg);
 		}
 	}

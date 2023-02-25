@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 00:30:20 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/05 03:08:31 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/22 20:53:29 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ bool	fill_philo_args(int argc, char **argv, t_philo_args *args)
 	args->sleep_time = ft_atol(words[3]);
 	if (args->is_limited)
 		args->eat_limit = ft_atol(words[4]);
+	args->start_time = get_mtime();
 	if (!is_valid_num(words[0], args->count)
 		||	!is_valid_num(words[1], args->die_time)
 		||  !is_valid_num(words[2], args->eat_time)
