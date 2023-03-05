@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 01:57:27 by bammar            #+#    #+#             */
-/*   Updated: 2023/03/05 13:05:36 by bammar           ###   ########.fr       */
+/*   Updated: 2023/03/05 21:48:46 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,27 @@ static bool	eat(t_thread_arg *thrd_arg)
 	
 	pthread_mutex_lock(rfork.mutex);
 	pthread_mutex_lock(lfork.mutex);
-	rfork.is_used = true;
-	lfork.is_used = true;
-	rfork.last_user = thrd_arg->philo->num;
-	lfork.last_user = thrd_arg->philo->num;
-	thrd_arg->philo->state = EATING;
-	philo_msg(thrd_arg, "has taken a fork\n");
-	philo_msg(thrd_arg, "has taken a fork\n");
-	philo_msg(thrd_arg, "is eating\n");
-	thrd_arg->philo->last_mealtime = get_mtime();
+	if (*thrd_arg->is_exit == false)
+	{
+		rfork.is_used = true;
+		lfork.is_used = true;
+		rfork.last_user = thrd_arg->philo->num;
+		lfork.last_user = thrd_arg->philo->num;
+		thrd_arg->philo->state = EATING;
+		philo_msg(thrd_arg, "has taken a fork\n");
+		philo_msg(thrd_arg, "has taken a fork\n");
+		philo_msg(thrd_arg, "is eating\n");
+		usleep((thrd_arg->args->eat_time) * 1000);
+		thrd_arg->philo->last_mealtime = get_mtime();
+		// pthread_mutex_unlock(lfork.mutex);
+		// pthread_mutex_unlock(rfork.mutex);
+		// pthread_mutex_lock(lfork.mutex);
+		// pthread_mutex_lock(rfork.mutex);
+		rfork.is_used = false;
+		lfork.is_used = false;
+	}
 	pthread_mutex_unlock(lfork.mutex);
 	pthread_mutex_unlock(rfork.mutex);
-	usleep((thrd_arg->args->eat_time) * 1000);
-	pthread_mutex_lock(lfork.mutex);
-	pthread_mutex_lock(rfork.mutex);
-	rfork.is_used = false;
-	lfork.is_used = false;
-	pthread_mutex_unlock(rfork.mutex);
-	pthread_mutex_unlock(lfork.mutex);
 	return (true);
 }
 
@@ -74,22 +77,20 @@ void	*philo_lifecycle(void *arg)
 		if (get_mtime() - thrd_arg->philo->last_mealtime
 			>= (time_t)thrd_arg->args->die_time)
 			return (die(thrd_arg));
-		else if (rfork.is_used || lfork.is_used
+		
+		
+		else if (thrd_arg->philo->state == EATING && !(*thrd_arg->is_exit))
+			philo_sleep(thrd_arg);
+		
+		else if ((rfork.is_used || lfork.is_used
 			|| rfork.last_user == thrd_arg->philo->num
 			|| lfork.last_user == thrd_arg->philo->num
-			|| thrd_arg->philo->state != THINKING)
+			|| thrd_arg->philo->state != THINKING) && !(*thrd_arg->is_exit))
 			thrd_arg->philo->state = THINKING;
-		else if (thrd_arg->philo->state != EATING)
+		else if (thrd_arg->philo->state != EATING && !(*thrd_arg->is_exit))
 		{
 			thrd_arg->philo->state = EATING;
 			eat(thrd_arg);
-			
-		}
-		else
-		{
-			thrd_arg->philo->state = SLEEPING;
-			philo_msg(thrd_arg, "is sleeping\n");
-			philo_sleep(thrd_arg);
 		}
 	}
 	return (NULL);
