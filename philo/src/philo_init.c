@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 23:06:46 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/22 20:39:14 by bammar           ###   ########.fr       */
+/*   Updated: 2023/03/10 21:16:12 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static bool	forks_init(pthread_mutex_t ***forks, size_t count)
 	while (i < count)
 	{
 		(*forks)[i] = malloc(sizeof(pthread_mutex_t));
-		if (!(*forks)[i])
+		if (!((*forks)[i]))
 			return (false);
 		if (pthread_mutex_init((*forks)[i], NULL) != 0)
 			return (false);
@@ -72,8 +72,8 @@ bool	philo_init(t_philo_args *args, t_philo ***philos,
 		if (!(*philos)[i]->thread)
 			return (false);
 		(*philos)[i]->num = i + 1;
-		(*philos)[i]->forks[RIGHT].mutex = &((**forks)[right_fork(i, args->count)]);
-		(*philos)[i]->forks[LEFT].mutex = &((**forks)[left_fork(i, args->count)]);
+		(*philos)[i]->forks[RIGHT].mutex = (*forks)[right_fork(i, args->count)];
+		(*philos)[i]->forks[LEFT].mutex = (*forks)[left_fork(i, args->count)];
 		i++;
 	}
 	(*philos)[i] = NULL;
