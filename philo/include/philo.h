@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 21:56:30 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/25 11:39:03 by bammar           ###   ########.fr       */
+/*   Updated: 2023/03/11 00:10:19 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_thread_arg
 	t_philo_args	*args;
 	bool			*is_exit;
 	pthread_mutex_t	*exit_mutex;
+	pthread_mutex_t	*print_mutex;
 }	t_thread_arg;
 
 long	ft_atol(const char *str);
