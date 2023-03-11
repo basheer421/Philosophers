@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 02:56:38 by bammar            #+#    #+#             */
-/*   Updated: 2023/03/11 00:29:59 by bammar           ###   ########.fr       */
+/*   Updated: 2023/03/11 15:36:55 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	philo_sim(t_philo **philos, t_philo_args *args)
 			{
 				return (false);
 			}
-		usleep(150);
+		// usleep(150);
 		i++;
 	}
 	
